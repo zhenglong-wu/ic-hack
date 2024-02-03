@@ -1,0 +1,832 @@
+[
+    {
+        "status": "success",
+        "postcode": "E1 6JE",
+        "postcode_type": "full",
+        "url": "https://propertydata.co.uk/draw?input=E1+6JE",
+        "data": {
+            "points_analysed": 100,
+            "radius": "0.17",
+            "average": 818300,
+            "70pc_range": [
+                650000,
+                1350000
+            ],
+            "80pc_range": [
+                500000,
+                1750000
+            ],
+            "90pc_range": [
+                410000,
+                1850000
+            ],
+            "100pc_range": [
+                203000,
+                2800000
+            ],
+            "raw_data": [
+                {
+                    "price": 1795000,
+                    "lat": "51.52679000",
+                    "lng": "-0.07838000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.03"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52603000",
+                    "lng": "-0.07698000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.06"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52597000",
+                    "lng": "-0.07718000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.06"
+                },
+                {
+                    "price": 425000,
+                    "lat": "51.52597000",
+                    "lng": "-0.07718000",
+                    "bedrooms": null,
+                    "type": "flat",
+                    "distance": "0.06"
+                },
+                {
+                    "price": 1100000,
+                    "lat": "51.52596800",
+                    "lng": "-0.07718400",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.06"
+                },
+                {
+                    "price": 650000,
+                    "lat": "51.52603000",
+                    "lng": "-0.07698000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.06"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52596700",
+                    "lng": "-0.07680500",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52600800",
+                    "lng": "-0.07678900",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52596700",
+                    "lng": "-0.07680500",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52600800",
+                    "lng": "-0.07678900",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 775000,
+                    "lat": "51.52596700",
+                    "lng": "-0.07680500",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 650000,
+                    "lat": "51.52582900",
+                    "lng": "-0.07690100",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 650000,
+                    "lat": "51.52600800",
+                    "lng": "-0.07678800",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 410000,
+                    "lat": "51.52598400",
+                    "lng": "-0.07673700",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 410000,
+                    "lat": "51.52598400",
+                    "lng": "-0.07673700",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 410000,
+                    "lat": "51.52599000",
+                    "lng": "-0.07674000",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.07"
+                },
+                {
+                    "price": 695000,
+                    "lat": "51.52552900",
+                    "lng": "-0.07946600",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.08"
+                },
+                {
+                    "price": 770000,
+                    "lat": "51.52540000",
+                    "lng": "-0.07900000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.08"
+                },
+                {
+                    "price": 695000,
+                    "lat": "51.52552900",
+                    "lng": "-0.07946600",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.08"
+                },
+                {
+                    "price": 770000,
+                    "lat": "51.52540000",
+                    "lng": "-0.07900000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.08"
+                },
+                {
+                    "price": 900000,
+                    "lat": "51.52538000",
+                    "lng": "-0.07935000",
+                    "bedrooms": null,
+                    "type": "detached_house",
+                    "distance": "0.09"
+                },
+                {
+                    "price": 1100000,
+                    "lat": "51.52773000",
+                    "lng": "-0.07891000",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.09"
+                },
+                {
+                    "price": 1100000,
+                    "lat": "51.52772500",
+                    "lng": "-0.07891400",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.09"
+                },
+                {
+                    "price": 900000,
+                    "lat": "51.52537500",
+                    "lng": "-0.07935000",
+                    "bedrooms": null,
+                    "type": "detached_house",
+                    "distance": "0.09"
+                },
+                {
+                    "price": 1250000,
+                    "lat": "51.52662000",
+                    "lng": "-0.07596000",
+                    "bedrooms": 3,
+                    "type": "terraced_house",
+                    "distance": "0.10"
+                },
+                {
+                    "price": 1100000,
+                    "lat": "51.52578800",
+                    "lng": "-0.08045900",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.10"
+                },
+                {
+                    "price": 1350000,
+                    "lat": "51.52661500",
+                    "lng": "-0.07595900",
+                    "bedrooms": 3,
+                    "type": "terraced_house",
+                    "distance": "0.10"
+                },
+                {
+                    "price": 1100000,
+                    "lat": "51.52621600",
+                    "lng": "-0.08063600",
+                    "bedrooms": null,
+                    "type": "detached_house",
+                    "distance": "0.10"
+                },
+                {
+                    "price": 1100000,
+                    "lat": "51.52578800",
+                    "lng": "-0.08045900",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.10"
+                },
+                {
+                    "price": 2800000,
+                    "lat": "51.52512900",
+                    "lng": "-0.07920900",
+                    "bedrooms": 4,
+                    "type": "flat",
+                    "distance": "0.10"
+                },
+                {
+                    "price": 2800000,
+                    "lat": "51.52513000",
+                    "lng": "-0.07921000",
+                    "bedrooms": 4,
+                    "type": "flat",
+                    "distance": "0.10"
+                },
+                {
+                    "price": 725000,
+                    "lat": "51.52780200",
+                    "lng": "-0.07945900",
+                    "bedrooms": null,
+                    "type": "detached_house",
+                    "distance": "0.11"
+                },
+                {
+                    "price": 416500,
+                    "lat": "51.52776300",
+                    "lng": "-0.07682200",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.11"
+                },
+                {
+                    "price": 1450000,
+                    "lat": "51.52801000",
+                    "lng": "-0.07721000",
+                    "bedrooms": null,
+                    "type": "detached_house",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 2200000,
+                    "lat": "51.52794600",
+                    "lng": "-0.07719100",
+                    "bedrooms": 3,
+                    "type": "detached_house",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52522200",
+                    "lng": "-0.08042700",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52522000",
+                    "lng": "-0.08043000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52530900",
+                    "lng": "-0.08032100",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52531000",
+                    "lng": "-0.08032000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52530000",
+                    "lng": "-0.08056000",
+                    "bedrooms": null,
+                    "type": "detached_house",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52530000",
+                    "lng": "-0.08056000",
+                    "bedrooms": 2,
+                    "type": "detached_house",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52530000",
+                    "lng": "-0.08056000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52522200",
+                    "lng": "-0.08042700",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 540000,
+                    "lat": "51.52599000",
+                    "lng": "-0.07547000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 575000,
+                    "lat": "51.52602000",
+                    "lng": "-0.07562000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 600000,
+                    "lat": "51.52753000",
+                    "lng": "-0.07606000",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 1350000,
+                    "lat": "51.52526000",
+                    "lng": "-0.08047000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 1250000,
+                    "lat": "51.52530000",
+                    "lng": "-0.08056000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 600000,
+                    "lat": "51.52752700",
+                    "lng": "-0.07606100",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 2200000,
+                    "lat": "51.52795000",
+                    "lng": "-0.07719000",
+                    "bedrooms": 3,
+                    "type": "detached_house",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 1250000,
+                    "lat": "51.52530400",
+                    "lng": "-0.08055600",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 1350000,
+                    "lat": "51.52526400",
+                    "lng": "-0.08047300",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 700000,
+                    "lat": "51.52496500",
+                    "lng": "-0.07959000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 670000,
+                    "lat": "51.52752700",
+                    "lng": "-0.07606100",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 1350000,
+                    "lat": "51.52526400",
+                    "lng": "-0.08047300",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 1850000,
+                    "lat": "51.52795000",
+                    "lng": "-0.07719000",
+                    "bedrooms": 2,
+                    "type": "detached_house",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 700000,
+                    "lat": "51.52496000",
+                    "lng": "-0.07959000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 670000,
+                    "lat": "51.52753000",
+                    "lng": "-0.07606000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.12"
+                },
+                {
+                    "price": 500000,
+                    "lat": "51.52456000",
+                    "lng": "-0.07854000",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.13"
+                },
+                {
+                    "price": 500000,
+                    "lat": "51.52456100",
+                    "lng": "-0.07853700",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.13"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52724400",
+                    "lng": "-0.08103100",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.13"
+                },
+                {
+                    "price": 1000000,
+                    "lat": "51.52456100",
+                    "lng": "-0.07853700",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.13"
+                },
+                {
+                    "price": 500000,
+                    "lat": "51.52456100",
+                    "lng": "-0.07853700",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.13"
+                },
+                {
+                    "price": 1000000,
+                    "lat": "51.52456000",
+                    "lng": "-0.07854000",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.13"
+                },
+                {
+                    "price": 1850000,
+                    "lat": "51.52713500",
+                    "lng": "-0.08144500",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 1850000,
+                    "lat": "51.52713500",
+                    "lng": "-0.08144500",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 1500000,
+                    "lat": "51.52444900",
+                    "lng": "-0.07832600",
+                    "bedrooms": null,
+                    "type": "detached_house",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 1500000,
+                    "lat": "51.52445000",
+                    "lng": "-0.07833000",
+                    "bedrooms": null,
+                    "type": "detached_house",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 1015000,
+                    "lat": "51.52507416",
+                    "lng": "-0.08067291",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 1000000,
+                    "lat": "51.52809500",
+                    "lng": "-0.07638700",
+                    "bedrooms": 4,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 203000,
+                    "lat": "51.52732000",
+                    "lng": "-0.07524000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 1000000,
+                    "lat": "51.52507416",
+                    "lng": "-0.08067291",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52594500",
+                    "lng": "-0.08143200",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52515700",
+                    "lng": "-0.08089400",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52516000",
+                    "lng": "-0.08089000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 850000,
+                    "lat": "51.52515700",
+                    "lng": "-0.08089400",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 203000,
+                    "lat": "51.52732000",
+                    "lng": "-0.07535000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 1000000,
+                    "lat": "51.52810000",
+                    "lng": "-0.07639000",
+                    "bedrooms": 4,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52594000",
+                    "lng": "-0.08143000",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.14"
+                },
+                {
+                    "price": 700000,
+                    "lat": "51.52478300",
+                    "lng": "-0.08050200",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 1850000,
+                    "lat": "51.52713000",
+                    "lng": "-0.08145000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 700000,
+                    "lat": "51.52478000",
+                    "lng": "-0.08050000",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 700000,
+                    "lat": "51.52478300",
+                    "lng": "-0.08050200",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 775000,
+                    "lat": "51.52543000",
+                    "lng": "-0.07507000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 750000,
+                    "lat": "51.52576000",
+                    "lng": "-0.08162000",
+                    "bedrooms": 1,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 775000,
+                    "lat": "51.52543100",
+                    "lng": "-0.07507200",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 800000,
+                    "lat": "51.52478300",
+                    "lng": "-0.08050200",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 800000,
+                    "lat": "51.52478300",
+                    "lng": "-0.08050200",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 800000,
+                    "lat": "51.52478000",
+                    "lng": "-0.08050000",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.15"
+                },
+                {
+                    "price": 720000,
+                    "lat": "51.52840700",
+                    "lng": "-0.07628900",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 720000,
+                    "lat": "51.52846000",
+                    "lng": "-0.07652000",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 700000,
+                    "lat": "51.52839900",
+                    "lng": "-0.07627400",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 700000,
+                    "lat": "51.52840000",
+                    "lng": "-0.07627000",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 700000,
+                    "lat": "51.52839900",
+                    "lng": "-0.07627400",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 650000,
+                    "lat": "51.52443300",
+                    "lng": "-0.07629400",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 650000,
+                    "lat": "51.52443300",
+                    "lng": "-0.07629400",
+                    "bedrooms": 2,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 399950,
+                    "lat": "51.52485600",
+                    "lng": "-0.07558900",
+                    "bedrooms": null,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 720000,
+                    "lat": "51.52840700",
+                    "lng": "-0.07628900",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.16"
+                },
+                {
+                    "price": 1750000,
+                    "lat": "51.52445000",
+                    "lng": "-0.07600000",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.17"
+                },
+                {
+                    "price": 1750000,
+                    "lat": "51.52445100",
+                    "lng": "-0.07599500",
+                    "bedrooms": 3,
+                    "type": "flat",
+                    "distance": "0.17"
+                }
+            ]
+        },
+        "process_time": "2.00"
+    }
+]
