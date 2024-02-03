@@ -417,9 +417,12 @@ export default function RouteView() {
     })();
   }, []);
 
+  const [searchbarText, setSearchBarText] = useState("")
+
   return (
     <View style={styles.view}>
-      <Searchbar style={{ position: 'absolute', top: 50, zIndex: 23 }} placeholder="Search" value="" />
+      <Searchbar style={{ position: 'absolute', top: 50, zIndex: 23,
+                }} placeholder="Search" value={searchbarText} onChangeText={setSearchBarText} />
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
