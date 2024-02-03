@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, Alert, Button, Pressable, TouchableOpaci
 import { colors } from "../Colors";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
+import { Searchbar } from "react-native-paper";
 
 const coordinates = [
   [51.4990374, -0.1744124],
@@ -418,6 +419,7 @@ export default function RouteView() {
 
   return (
     <View style={styles.view}>
+      <Searchbar style={{ position: 'absolute', top: 50, zIndex: 23 }} placeholder="Search" value="" />
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
