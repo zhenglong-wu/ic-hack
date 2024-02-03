@@ -1,5 +1,20 @@
-import MapView, { Circle, Marker, PROVIDER_GOOGLE, Polyline } from "react-native-maps";
-import { StyleSheet, View, Text, Image, Alert, Button, Pressable, TouchableOpacity } from "react-native";
+import MapView, {
+  Circle,
+  Marker,
+  PROVIDER_GOOGLE,
+  Polyline,
+} from "react-native-maps";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Alert,
+  Button,
+  Pressable,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
 import { colors } from "../Colors";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
@@ -377,6 +392,7 @@ export default function RouteView() {
   );
   const [heading, setHeading] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [modalVisible, setModalVisible] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -449,55 +465,56 @@ export default function RouteView() {
           anchor={{ x: 0.5, y: 0.5 }}
         >
           <View
-            style={{
-              backgroundColor: colors.route,
-              padding: 8,
-              borderRadius: 8,
-            }}
+            style={[
+              {
+                backgroundColor: colors.route,
+              },
+              styles.marker,
+            ]}
           ></View>
         </Marker>
 
         <Marker coordinate={coordinates[0]} anchor={{ x: 0.5, y: 0.5 }}>
           <View
-            style={{
-              backgroundColor: colors.routePassed,
-              padding: 8,
-              borderRadius: 8,
-            }}
+            style={[
+              {
+                backgroundColor: colors.routePassed,
+              },
+              styles.marker,
+            ]}
           ></View>
         </Marker>
         {location ? (
           <>
             <Marker coordinate={location} anchor={{ x: 0.5, y: 0.5 }}>
-              <View
-                style={{
-                  backgroundColor: colors.route,
-                  padding: 12,
-                  borderRadius: 12,
-                  position: "absolute",
-                }}
-              ></View>
+              <View style={styles.currentBg}></View>
 
               <Image
                 source={require("../assets/navigation.png")}
-                style={{
-                  width: 24,
-                  height: 24,
-                  position: "absolute",
-                  transform: [{ rotate: `${heading - 45}deg` }],
-                }}
+                style={[
+                  {
+                    transform: [{ rotate: `${heading - 45}deg` }],
+                  },
+                  styles.currentFg,
+                ]}
               />
             </Marker>
           </>
         ) : null}
       </MapView>
-      <View style={{padding: 15}}>
-        <Text style={{fontSize: 20, marginBottom: 5 }}>
-          <Text style={{color: 'green'}}>95%</Text> safety score
-        </Text>
-        <Text style={{marginBottom: 10}}>25 min | 1.2 mi | Mostly flat</Text>
-        <Button title="Start" />
-      </View>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.routes}>
+          <Text>
+            <Text style={{ color: "green" }}>95%</Text> safety score
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            25 min | 1.2 mi | Mostly flat
+          </Text>
+          <View style={styles.confirmButton}>
+            <Text style={styles.confirmButtonText}>Confirm Destination</Text>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -507,6 +524,40 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: "85%",
+    height: "100%",
+  },
+  marker: {
+    padding: 8,
+    borderRadius: 8,
+  },
+  currentBg: {
+    backgroundColor: colors.route,
+    padding: 12,
+    borderRadius: 12,
+    position: "absolute",
+  },
+  currentFg: {
+    width: 24,
+    height: 24,
+    position: "absolute",
+  },
+  routes: {
+    backgroundColor: "white",
+    padding: 30,
+    position: "absolute",
+    width: "100%",
+    bottom: 0,
+    borderTopEndRadius: 20,
+    borderTopLeftRadius: 20,
+  },
+  confirmButton: {
+    backgroundColor: colors.buttonBg,
+    padding: 16,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  confirmButtonText: {
+    color: "white",
+    fontFamily: "body",
   },
 });

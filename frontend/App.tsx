@@ -9,7 +9,7 @@ import RouteView from "./views/RouteView";
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     heading: require("./assets/fonts/Visby-CF/Fontspring-DEMO-visbycf-extrabold.otf"),
-    body: require("./assets/fonts/Visby-CF/Fontspring-DEMO-visbycf-bold.otf"),
+    body: require("./assets/fonts/Inter/Inter-Medium.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
