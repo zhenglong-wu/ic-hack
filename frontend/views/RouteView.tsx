@@ -1,10 +1,5 @@
-import MapView, {
-  Circle,
-  Marker,
-  PROVIDER_GOOGLE,
-  Polyline,
-} from "react-native-maps";
-import { StyleSheet, View, Text, Image, Alert } from "react-native";
+import MapView, { Circle, Marker, PROVIDER_GOOGLE, Polyline } from "react-native-maps";
+import { StyleSheet, View, Text, Image, Alert, Button, Pressable, TouchableOpacity } from "react-native";
 import { colors } from "../Colors";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
@@ -491,6 +486,13 @@ export default function RouteView() {
           </>
         ) : null}
       </MapView>
+      <View style={{padding: 15}}>
+        <Text style={{fontSize: 20, marginBottom: 5 }}>
+          <Text style={{color: 'green'}}>95%</Text> safety score
+        </Text>
+        <Text style={{marginBottom: 10}}>25 min | 1.2 mi | Mostly flat</Text>
+        <Button title="Start" />
+      </View>
     </View>
   );
 }
@@ -500,6 +502,6 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: "100%",
+    height: "85%",
   },
 });
