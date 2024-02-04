@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
-from backend.main import main
-from backend.routing.graph_hopper_manager import get_route
+from main import main
+from graph_hopper_manager import get_route
 app = Flask(__name__)
 
 @app.route('/')
@@ -17,7 +17,7 @@ def post():
         if data is None:
             return jsonify({"error": "Bad Request", "message": "Missing or invalid data"}), 400
         print("Returning:")
-        dat = get_route(data['from'], data['to'])
+        dat = main(data['from'], data['to'])
         print(dat)
         return dat
 
@@ -31,8 +31,8 @@ def get():
     print("GET")
     try:
         # handling a GET request with query parameters
-        from_param = [request.args.get('fromLang'), request.args.get('fromLat')]
-        to_param = [request.args.get('toLang'), request.args.get('toLat')]
+        from_param = [float(request.args.get('fromLong')), float(request.args.get('fromLat'))]
+        to_param = [float(request.args.get('toLong')), float(request.args.get('toLat'))]
 
         print(f"Data in is: from={from_param}, to={to_param}")
 
@@ -40,7 +40,7 @@ def get():
             return jsonify({"error": "Bad Request", "message": "Missing or invalid parameters"}), 400
 
         print("Returning:")
-        dat = get_route(from_param, to_param)
+        dat = main(from_param, to_param)
         print(dat)
         return dat
 

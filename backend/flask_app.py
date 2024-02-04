@@ -1,6 +1,6 @@
 from flask import Flask, request
 import main   
-from routing.w3w_manager import convert_w3w
+from w3w_manager import convert_w3w
 
 app = Flask(__name__)    
 

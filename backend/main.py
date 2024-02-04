@@ -1,19 +1,22 @@
-from models.predict import predict
-import graph_hopper_manager
+from predict import predict
+from graph_hopper_manager import get_route
 import json
 
 def main(dept, dest):
 
     try:
-        route = graph_hopper_manager.get_route(dept=dept, dest=dest)
+        
+        route = get_route(dept=dept, dest=dest)
+
+        print(route)
         for path in route['data']['paths']:
             print('in loop')
             scores = [predict(long=x[0], lat=x[1]) for x in path['points']['coordinates']]        
             print(scores)
             if 'safety_score' not in path:
-                path['safety_score'] = [sum(scores)/len(scores)]
+                path['safety_score'] = [float(sum(scores)/len(scores))]
             else:
-                path['safety_score'].append(sum(scores)/len(scores))
+                path['safety_score'].append(float(sum(scores)/len(scores)))
             print('fin')
             
         return json.dumps(route)
