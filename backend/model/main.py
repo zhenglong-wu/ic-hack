@@ -4,11 +4,16 @@ import json
 
 def main(dept, dest):
 
-    route = graph_hopper_manager.get_route(dept=dept, dest=dest)
-    scores = [predict(long=x[0], lat=x[1]) for x in route['data']['paths'][0]['points']['coordinates']]
-    route['safety_score'] = sum(scores)/len(scores)
+    try:
+        route = graph_hopper_manager.get_route(dept=dept, dest=dest)
+        scores = [predict(long=x[0], lat=x[1]) for x in route['data']['paths'][0]['points']['coordinates']]
+        route['safety_score'] = sum(scores)/len(scores)
 
-    return json.dumps(route)
+        return json.dumps(route)
+    
+    except Exception as error:
+        print(error)
+        return
 
 
 # with open('new.json', 'w') as f:
