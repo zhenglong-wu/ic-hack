@@ -795,7 +795,7 @@ export default function RouteView() {
       {uiState !== 'safety' ? (
         ''
       ) : (
-        <Modal animationType="slide" transparent={true}>
+        <View>
           <View style={styles.routes}>
             {routes.map((route, index) => {
               return (
@@ -818,7 +818,7 @@ export default function RouteView() {
               <Text style={styles.confirmButtonText}>Confirm Destination</Text>
             </TouchableOpacity>
           </View>
-        </Modal>
+        </View>
       )}
       {uiState !== "navigation" ? (
         ""
