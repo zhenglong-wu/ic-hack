@@ -90,7 +90,7 @@ export default function RouteView() {
 
   const [wasFrom, setWasFrom] = useState(false);
 
-  const minArea = 0;
+  const minArea = 0.003;
 
   const top = useMemo(() => {
     return (
