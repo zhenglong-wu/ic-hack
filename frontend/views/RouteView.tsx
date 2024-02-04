@@ -1306,7 +1306,7 @@ const findPathData = async (from: {
             }
         ]
     }
-} 
+  } 
 }
 
 const safeRadius = 1;

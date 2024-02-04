@@ -64,7 +64,7 @@ export default function RouteOption(props: {
             {Math.round(props.walkingTime)} Minutes Walk
           </Text>
           <Text style={styles.algorithm}>
-            Our algorithm calculated that this route avoids dangerous areas
+            {getSafetyDescriptor(props.score)}
           </Text>
         </View>
         <View style={styles.estimated}>
@@ -89,13 +89,23 @@ function getSafetyText(score: number) {
   }
 }
 
+function getSafetyDescriptor(score: number) {
+  if (score >= 8) {
+    return "Our algorithm calculated that this route avoids dangerous areas";
+  } else if (score >= 5) {
+    return "Our algorithm calculated that this route mostly avoids dangerous areas";
+  } else {
+    return "Our algorithm calculated that this route is statistically less safe";
+  }
+}
+
 function getForegroundColor(score: number) {
   if (score >= 8) {
     return colors.score.safe;
   } else if (score >= 5) {
     return colors.score.warning;
   } else {
-    return colors.score.warning;
+    return colors.score.danger;
   }
 }
 
@@ -105,7 +115,7 @@ function getBackgroundColor(score: number) {
   } else if (score >= 5) {
     return colors.indicator.warning;
   } else {
-    return colors.indicator.warning;
+    return colors.indicator.danger;
   }
 }
 

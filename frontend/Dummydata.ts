@@ -874,7 +874,7 @@ export const dummy = {
             {
                 "distance": 1260.147,
                 "weight": 814.449364,
-                "time": 907080,
+                "time": 9070800,
                 "transfers": 0,
                 "points_encoded": false,
                 "bbox": [
@@ -1267,7 +1267,7 @@ export const dummy = {
                         ]
                     ]
                 },
-                "safety_score": 0.64256
+                "safety_score": 0.2
             }
         ]
     }
