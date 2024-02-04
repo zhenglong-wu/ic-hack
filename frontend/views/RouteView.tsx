@@ -15,13 +15,14 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { colors } from "../Colors";
 import * as Location from "expo-location";
 import { useEffect, useMemo, useState } from "react";
-import { Searchbar } from "react-native-paper";
+import { Searchbar, TextInput } from "react-native-paper";
 import RouteOption from "../components/RouteOption";
 import { Animated } from "react-native";
+import axios from "axios";
 
 const safeRadius = 1;
 
@@ -263,6 +264,8 @@ const GEOLOCATION_OPTIONS: Location.LocationOptions = {
   mayShowUserSettingsDialog: true,
 };
 
+const GOOGLE_PACES_API_BASE_URL = "https://maps.googleapis.com/maps/api/place";
+
 export default function RouteView(props: {
   routes: {
     score: number;
@@ -396,24 +399,41 @@ export default function RouteView(props: {
     setModalVisible(false);
   };
 
+  const [search, setSearch] = useState({ term: "", fetchPredictions: false });
+  const [predictions, setPredictions] = useState<
+    {
+      description: string;
+      place_id: string;
+      reference: string;
+      matched_substrings: any[];
+      tructured_formatting: Object;
+      terms: Object[];
+      types: string[];
+    }[]
+  >([]);
+
+  const onChangeText = async () => {
+    if (search.term.trim() === "") return;
+    if (!search.fetchPredictions) return;
+    const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/autocomplete/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&input=${search.term}`;
+    try {
+      const result = await axios.request({
+        method: "post",
+        url: apiUrl,
+      });
+      if (result) {
+        const {
+          data: { predictions },
+        } = result;
+        setPredictions(predictions);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View style={styles.view}>
-      <GooglePlacesAutocomplete
-        styles={{
-          textInputContainer: {
-            zIndex: 100,
-            position: 'absolute',
-            top: 100
-          }
-        }}
-        placeholder="Search"
-        query={{
-          key: 'AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I',
-          language: 'en', // language of the results
-        }}
-        onPress={(data, details = null) => console.log(data)}
-        onFail={(error) => console.error(error)}
-      />
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
@@ -477,6 +497,98 @@ export default function RouteView(props: {
           </>
         ) : null}
       </MapView>
+      {/* <GooglePlacesAutocomplete
+        styles={{
+          textInputContainer: {
+            zIndex: 100,
+            position: "absolute",
+            top: 100,
+          },
+        }}
+        placeholder="Search"
+        query={{
+          key: "AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I",
+          language: "en", // language of the results
+        }}
+        onPress={(data, details = null) => console.log(data)}
+        onFail={(error) => console.error(error)}
+      /> */}
+
+      <View
+        style={{
+          zIndex: 100,
+          position: "absolute",
+          top: 10,
+          left: 0,
+          right: 0,
+          margin: 20,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "white",
+            borderRadius: 10,
+            paddingHorizontal: 20,
+          }}
+        >
+          <View
+            style={[
+              styles.searchfield,
+              {
+                borderBottomColor: "#e0e0e0",
+                borderBottomWidth: 1,
+              },
+            ]}
+          >
+            <Image
+              source={require("../assets/left.png")}
+              style={{
+                width: 15,
+                height: 15,
+              }}
+            />
+            <TextInput
+              caretHidden={false}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
+              placeholder="From"
+              placeholderTextColor={"#a0a0a0"}
+              cursorColor="#404040"
+              onChangeText={(text) => {}}
+              style={{
+                fontFamily: "body",
+                flex: 1,
+                height: 50,
+                backgroundColor: "transparent",
+              }}
+            ></TextInput>
+          </View>
+
+          <View style={styles.searchfield}>
+            <Image
+              source={require("../assets/right.png")}
+              style={{
+                width: 15,
+                height: 15,
+              }}
+            />
+            <TextInput
+              caretHidden={false}
+              underlineColor="transparent"
+              activeUnderlineColor="transparent"
+              placeholder="To"
+              placeholderTextColor={"#a0a0a0"}
+              cursorColor="#404040"
+              style={{
+                fontFamily: "body",
+                flex: 1,
+                height: 50,
+                backgroundColor: "transparent",
+              }}
+            ></TextInput>
+          </View>
+        </View>
+      </View>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.routes}>
           {props.routes.map((route, index) => {
@@ -500,6 +612,11 @@ export default function RouteView(props: {
           </TouchableOpacity>
         </View>
       </Modal>
+      {/* <Modal>
+        <View>
+          <Text>Test</Text>
+        </View>
+      </Modal> */}
     </View>
   );
 }
@@ -545,5 +662,9 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: "white",
     fontFamily: "body",
+  },
+  searchfield: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
