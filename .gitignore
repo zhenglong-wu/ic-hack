@@ -1,1 +1,4 @@
 keras_optimise_logs
+.env
+*.pyc
+__pycache__/
