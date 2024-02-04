@@ -274,7 +274,6 @@ export default function RouteView() {
   );
   const [heading, setHeading] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [modalVisible, setModalVisible] = useState(true);
 
   const [coordinates, setCoordinates] = useState(
     [] as { latitude: number; longitude: number }[],
@@ -458,7 +457,6 @@ export default function RouteView() {
 
     setCoordinates(coords);
     if (location) updateProgress(coords, location);
-    setModalVisible(false);
     setUiState('navigation');
   };
 
@@ -797,7 +795,7 @@ export default function RouteView() {
       {uiState !== 'safety' ? (
         ''
       ) : (
-        <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <Modal animationType="slide" transparent={true}>
           <View style={styles.routes}>
             {routes.map((route, index) => {
               return (
@@ -915,7 +913,9 @@ export default function RouteView() {
                 mi - Arriving
               </Text>
             </View>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => {
+              setUiState('safety')
+            }}>
               <View
                 style={{
                   backgroundColor: "#FF2538",
