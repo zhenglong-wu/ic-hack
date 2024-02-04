@@ -463,7 +463,7 @@ export default function RouteView(props: {
       console.log(e);
     }
   };
-
+  const [uiState, setUiState] = useState<'destination' | 'safety' | 'navigation'>('destination');
   return (
     <View style={styles.view}>
       <MapView
@@ -563,6 +563,8 @@ export default function RouteView(props: {
             paddingHorizontal: 20,
           }}
         >
+          { uiState !== 'destination' ? '' :
+          <>
           <View
             style={[
               styles.searchfield,
@@ -603,7 +605,6 @@ export default function RouteView(props: {
               }}
             ></TextInput>
           </View>
-
           <View style={styles.searchfield}>
             <Image
               source={require("../assets/right.png")}
@@ -636,6 +637,8 @@ export default function RouteView(props: {
               }}
             ></TextInput>
           </View>
+          </>
+          }
         </View>
         <ScrollView
           style={{
@@ -678,6 +681,7 @@ export default function RouteView(props: {
           })}
         </ScrollView>
       </View>
+      { uiState !== 'safety' ? '' :
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.routes}>
           {props.routes.map((route, index) => {
@@ -701,6 +705,7 @@ export default function RouteView(props: {
           </TouchableOpacity>
         </View>
       </Modal>
+      }
       {/* <Modal>
         <View>
           <Text>Test</Text>
