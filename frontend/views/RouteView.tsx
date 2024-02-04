@@ -264,7 +264,7 @@ const GEOLOCATION_OPTIONS: Location.LocationOptions = {
   distanceInterval: 1,
   mayShowUserSettingsDialog: true,
 };
-
+0
 const GOOGLE_PACES_API_BASE_URL = "https://maps.googleapis.com/maps/api/place";
 
 export default function RouteView(props: {
@@ -386,13 +386,16 @@ export default function RouteView(props: {
       }
     })();
   }, [coordinates]);
+  const [uiState, setUiState] = useState<'destination' | 'safety' | 'navigation'>('destination');
 
   const [searchbarText, setSearchBarText] = useState("");
 
   const [selectedOption, setSelectedOption] = useState(0);
 
   const [fromText, setFromText] = useState("");
+  const [fromTextSelected, setFromTextSelected] = useState(false);
   const [toText, setToText] = useState("");
+  const [toTextSelected, setToTextSelected] = useState(false);
 
   const selectOption = (number: number) => {
     setSelectedOption(number);
@@ -403,6 +406,7 @@ export default function RouteView(props: {
     setCoordinates(props.routes[selectedOption].points);
     if (location) updateProgress(props.routes[selectedOption].points, location);
     setModalVisible(false);
+    setUiState('navigation');
   };
 
   const [predictions, setPredictions] = useState<
@@ -463,7 +467,6 @@ export default function RouteView(props: {
       console.log(e);
     }
   };
-  const [uiState, setUiState] = useState<'destination' | 'safety' | 'navigation'>('destination');
   return (
     <View style={styles.view}>
       <MapView
@@ -563,7 +566,7 @@ export default function RouteView(props: {
             paddingHorizontal: 20,
           }}
         >
-          { uiState !== 'destination' ? '' :
+          { uiState !== 'destination' && uiState !== 'safety' ? '' :
           <>
           <View
             style={[
@@ -651,11 +654,24 @@ export default function RouteView(props: {
           {predictions.map((prediction, index) => {
             return (
               <TouchableOpacity
-                onPress={(e) =>
-                  onPredictionTapped(
-                    prediction.place_id,
-                    prediction.description
-                  )
+                onPress={(e) => {
+                    onPredictionTapped(
+                      prediction.place_id,
+                      prediction.description
+                    )
+                    let _fromTextSelected = false
+                    let _toTextSelected = false
+                    if (wasFrom) {
+                      _fromTextSelected = true
+                      setFromTextSelected(true)
+                    } else {
+                      _toTextSelected = true
+                      setToTextSelected(true)
+                    }
+                    if ((fromTextSelected || _fromTextSelected) && (toTextSelected || _toTextSelected)) {
+                      setUiState('safety')
+                    }
+                  }
                 }
                 key={index}
               >
