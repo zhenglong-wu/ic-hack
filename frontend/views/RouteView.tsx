@@ -863,11 +863,13 @@ export default function RouteView() {
               left: 0,
               right: 0,
               backgroundColor: "white",
-              padding: 20,
+              paddingHorizontal: 20,
+              paddingVertical: 30,
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
               flexDirection: "row",
               alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
             <View style={{}}>
@@ -891,6 +893,26 @@ export default function RouteView() {
                 0.2mi - Arriving 07:55
               </Text>
             </View>
+            <TouchableOpacity onPress={() => {}}>
+              <View
+                style={{
+                  backgroundColor: "#FF2538",
+                  borderRadius: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "body",
+                    color: "white",
+                    fontSize: 14,
+                    paddingHorizontal: 25,
+                    paddingVertical: 13,
+                  }}
+                >
+                  Exit Route
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </>
       )}
