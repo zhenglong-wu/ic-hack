@@ -635,14 +635,56 @@ export default function RouteView() {
               paddingHorizontal: 20,
             }}
           >
-            <Image
-              source={require("../assets/turnleft.png")}
-              style={{
-                width: 45,
-                height: 56,
-                marginRight: 20,
-              }}
-            ></Image>
+            {(() => {
+              switch (
+                data.data.paths[selectedOption].instructions[instruction].sign
+              ) {
+                case -2:
+                  return (
+                    <Image
+                      source={require("../assets/turnleft.png")}
+                      style={{
+                        width: 36,
+                        height: 44,
+                        marginRight: 19,
+                        marginLeft: 10,
+                      }}
+                    ></Image>
+                  );
+                  break;
+                case 2:
+                  return (
+                    <Image
+                      source={require("../assets/turnright.png")}
+                      style={{
+                        width: 36,
+                        height: 44,
+                        marginRight: 19,
+                        marginLeft: 10,
+                      }}
+                    ></Image>
+                  );
+                  break;
+                case 0:
+                  return (
+                    <Image
+                      source={require("../assets/straight.png")}
+                      style={{
+                        width: 25,
+                        height: 40,
+                        marginRight: 30,
+                        marginLeft: 10,
+                      }}
+                    ></Image>
+                  );
+                  break;
+
+                default:
+                  return null;
+                  break;
+              }
+            })()}
+
             <View
               style={{
                 justifyContent: "center",
@@ -707,7 +749,21 @@ export default function RouteView() {
                     0.000621371 *
                     10
                 ) / 10}
-                mi - Arriving
+                mi - Arriving{" "}
+                {(() => {
+                  const arrivalTime = new Date(
+                    Date.now() +
+                      getRestTime(
+                        instruction,
+                        data.data.paths[selectedOption].instructions
+                      )
+                  );
+                  const minuteStr =
+                    arrivalTime.getMinutes() < 10
+                      ? `0${arrivalTime.getMinutes()}`
+                      : arrivalTime.getMinutes();
+                  return `${arrivalTime.getHours()}:${minuteStr}`;
+                })()}
               </Text>
             </View>
             <TouchableOpacity
