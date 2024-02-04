@@ -265,7 +265,7 @@ const GEOLOCATION_OPTIONS: Location.LocationOptions = {
   distanceInterval: 1,
   mayShowUserSettingsDialog: true,
 };
-0;
+
 const GOOGLE_PACES_API_BASE_URL = 'https://maps.googleapis.com/maps/api/place';
 
 export default function RouteView() {
