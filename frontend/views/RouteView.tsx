@@ -1812,10 +1812,11 @@ export default function RouteView() {
     setRoutes(
       data.data.paths.map((x) => {
         const arrivalTime = new Date(Date.now() + x.time);
+        const minuteStr = arrivalTime.getMinutes() < 10 ? `0${arrivalTime.getMinutes()}` : arrivalTime.getMinutes()
         return {
           score: Math.round(x.safety_score * 10),
           walkingTime: x.time / 60000,
-          arrival: `${arrivalTime.getHours()}:${arrivalTime.getMinutes()}`,
+          arrival: `${arrivalTime.getHours()}:${minuteStr}`,
           points: x.points.coordinates.map((x: any) => {
             return {
               latitude: x[1],
