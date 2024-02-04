@@ -804,6 +804,96 @@ export default function RouteView() {
           </View>
         </Modal>
       )}
+      {uiState !== "navigation" ? (
+        ""
+      ) : (
+        <>
+          <View
+            style={{
+              backgroundColor: "#2245FF",
+              position: "absolute",
+              top: 40,
+              left: 20,
+              right: 20,
+              height: 90,
+              borderRadius: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              paddingHorizontal: 20,
+            }}
+          >
+            <Image
+              source={require("../assets/turnleft.png")}
+              style={{
+                width: 45,
+                height: 56,
+                marginRight: 20,
+              }}
+            ></Image>
+            <View
+              style={{
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "body",
+                  color: "white",
+                  fontSize: 20,
+                  marginBottom: 5,
+                }}
+              >
+                Picasso Road
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "body",
+                  color: "white",
+                  fontSize: 14,
+                }}
+              >
+                Towards Callendar Road
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: "white",
+              padding: 20,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <View style={{}}>
+              <Text
+                style={{
+                  fontFamily: "body",
+                  color: "black",
+                  fontSize: 22,
+                  marginBottom: 5,
+                }}
+              >
+                5 min
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "body",
+                  color: "#a0a0a0",
+                  fontSize: 14,
+                }}
+              >
+                0.2mi - Arriving 07:55
+              </Text>
+            </View>
+          </View>
+        </>
+      )}
       {/* <Modal>
         <View>
           <Text>Test</Text>
