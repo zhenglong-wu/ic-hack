@@ -14,6 +14,7 @@ import {
   Pressable,
   TouchableOpacity,
   Modal,
+  ScrollView,
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { colors } from "../Colors";
@@ -285,6 +286,8 @@ export default function RouteView(props: {
     [] as { latitude: number; longitude: number }[]
   );
 
+  const [wasFrom, setWasFrom] = useState(false);
+
   const top = useMemo(() => {
     return Math.max(
       location?.latitude ?? 0,
@@ -388,6 +391,9 @@ export default function RouteView(props: {
 
   const [selectedOption, setSelectedOption] = useState(0);
 
+  const [fromText, setFromText] = useState("");
+  const [toText, setToText] = useState("");
+
   const selectOption = (number: number) => {
     setSelectedOption(number);
   };
@@ -399,7 +405,6 @@ export default function RouteView(props: {
     setModalVisible(false);
   };
 
-  const [search, setSearch] = useState({ term: "", fetchPredictions: false });
   const [predictions, setPredictions] = useState<
     {
       description: string;
@@ -412,10 +417,9 @@ export default function RouteView(props: {
     }[]
   >([]);
 
-  const onChangeText = async () => {
-    if (search.term.trim() === "") return;
-    if (!search.fetchPredictions) return;
-    const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/autocomplete/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&input=${search.term}`;
+  const onChangeText = async (text: string) => {
+    if (text.trim() === "") return;
+    const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/autocomplete/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&input=${text}`;
     try {
       const result = await axios.request({
         method: "post",
@@ -426,6 +430,34 @@ export default function RouteView(props: {
           data: { predictions },
         } = result;
         setPredictions(predictions);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onPredictionTapped = async (placeId: string, description: string) => {
+    const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/details/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&place_id=${placeId}`;
+    try {
+      const result = await axios.request({
+        method: "post",
+        url: apiUrl,
+      });
+      if (result) {
+        const {
+          data: {
+            result: {
+              geometry: { location },
+            },
+          },
+        } = result;
+        const { lat, lng } = location;
+        setPredictions([]);
+        if (wasFrom) {
+          setFromText(description);
+        } else {
+          setToText(description);
+        }
       }
     } catch (e) {
       console.log(e);
@@ -549,17 +581,25 @@ export default function RouteView(props: {
             />
             <TextInput
               caretHidden={false}
+              numberOfLines={1}
+              multiline={false}
+              value={fromText}
               underlineColor="transparent"
               activeUnderlineColor="transparent"
               placeholder="From"
               placeholderTextColor={"#a0a0a0"}
               cursorColor="#404040"
-              onChangeText={(text) => {}}
+              onChangeText={(text) => {
+                setFromText(text);
+                setWasFrom(true);
+                onChangeText(text);
+              }}
               style={{
                 fontFamily: "body",
                 flex: 1,
                 height: 50,
                 backgroundColor: "transparent",
+                textAlign: "auto",
               }}
             ></TextInput>
           </View>
@@ -574,20 +614,69 @@ export default function RouteView(props: {
             />
             <TextInput
               caretHidden={false}
+              numberOfLines={1}
+              multiline={false}
+              value={toText}
               underlineColor="transparent"
               activeUnderlineColor="transparent"
               placeholder="To"
               placeholderTextColor={"#a0a0a0"}
               cursorColor="#404040"
+              onChangeText={(text) => {
+                setToText(text);
+                setWasFrom(false);
+                onChangeText(text);
+              }}
               style={{
                 fontFamily: "body",
                 flex: 1,
                 height: 50,
                 backgroundColor: "transparent",
+                textAlign: "auto",
               }}
             ></TextInput>
           </View>
         </View>
+        <ScrollView
+          style={{
+            marginTop: 20,
+            backgroundColor: "white",
+            borderRadius: 10,
+            maxHeight: 250,
+          }}
+        >
+          {predictions.map((prediction, index) => {
+            return (
+              <TouchableOpacity
+                onPress={(e) =>
+                  onPredictionTapped(
+                    prediction.place_id,
+                    prediction.description
+                  )
+                }
+                key={index}
+              >
+                <View
+                  style={{
+                    padding: 15,
+                    borderBottomColor: "#e0e0e0",
+                    borderBottomWidth: 1,
+                  }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      color: "#404040",
+                      flex: 1,
+                    }}
+                  >
+                    {prediction.description}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
       </View>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.routes}>
