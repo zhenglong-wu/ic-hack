@@ -280,6 +280,8 @@ export default function RouteView() {
     [] as { latitude: number; longitude: number }[]
   );
 
+  const [instruction, setInstruction] = useState(0);
+
   const [map, setMap] = useState(null as MapView | null);
 
   const [from, setFrom] = useState(
@@ -374,7 +376,22 @@ export default function RouteView() {
       }
     }
 
-    if (p !== null) setProgress(p);
+    if (p !== null) {
+      setProgress(p);
+      for (
+        let i = 0;
+        i < data.data.paths[selectedOption].instructions.length;
+        i++
+      ) {
+        if (
+          data.data.paths[selectedOption].instructions[i].interval[0] >= p &&
+          data.data.paths[selectedOption].instructions[i].interval[1] < p
+        ) {
+          setInstruction(i);
+          break;
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -409,8 +426,6 @@ export default function RouteView() {
   const [uiState, setUiState] = useState<
     "destination" | "safety" | "navigation"
   >("destination");
-
-  const [searchbarText, setSearchBarText] = useState("");
 
   const [selectedOption, setSelectedOption] = useState(0);
 
@@ -839,20 +854,10 @@ export default function RouteView() {
                 style={{
                   fontFamily: "body",
                   color: "white",
-                  fontSize: 20,
-                  marginBottom: 5,
+                  fontSize: 16,
                 }}
               >
-                Picasso Road
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "body",
-                  color: "white",
-                  fontSize: 14,
-                }}
-              >
-                Towards Callendar Road
+                {data.data.paths[selectedOption].instructions[instruction].text}
               </Text>
             </View>
           </View>
@@ -881,7 +886,13 @@ export default function RouteView() {
                   marginBottom: 5,
                 }}
               >
-                5 min
+                {Math.round(
+                  getRestTime(
+                    instruction,
+                    data.data.paths[selectedOption].instructions
+                  ) / 60000
+                )}
+                min
               </Text>
               <Text
                 style={{
@@ -890,7 +901,15 @@ export default function RouteView() {
                   fontSize: 14,
                 }}
               >
-                0.2mi - Arriving 07:55
+                {Math.round(
+                  getRestDistance(
+                    instruction,
+                    data.data.paths[selectedOption].instructions
+                  ) *
+                    0.000621371 *
+                    10
+                ) / 10}
+                mi - Arriving
               </Text>
             </View>
             <TouchableOpacity onPress={() => {}}>
@@ -924,6 +943,33 @@ export default function RouteView() {
     </View>
   );
 }
+
+function getRestDistance(
+  instruction: number,
+  instructions: {
+    distance: number;
+  }[]
+) {
+  let sum = 0;
+  for (let i = instruction; i < instructions.length; i++) {
+    sum += instructions[i].distance;
+  }
+  return sum;
+}
+
+function getRestTime(
+  instruction: number,
+  instructions: {
+    time: number;
+  }[]
+) {
+  let sum = 0;
+  for (let i = instruction; i < instructions.length; i++) {
+    sum += instructions[i].time;
+  }
+  return sum;
+}
+
 const styles = StyleSheet.create({
   view: {
     height: "100%",
