@@ -69,6 +69,7 @@ export default function RouteView() {
   const [location, setLocation] = useState(
     null as { latitude: number; longitude: number } | null
   );
+  const [locationSetup, setLocationSetup] = useState(false);
   const [heading, setHeading] = useState(0);
   const [progress, setProgress] = useState(0);
 
@@ -89,41 +90,51 @@ export default function RouteView() {
 
   const [wasFrom, setWasFrom] = useState(false);
 
+  const minArea = 0;
+
   const top = useMemo(() => {
-    return Math.max(
-      location?.latitude ?? 0,
-      ...(from ? [from.latitude] : []),
-      ...(to ? [to.latitude] : []),
-      ...coordinates.map((coord) => coord.latitude)
+    return (
+      Math.max(
+        location?.latitude ?? 0,
+        ...(from ? [from.latitude] : []),
+        ...(to ? [to.latitude] : []),
+        ...coordinates.map((coord) => coord.latitude)
+      ) + minArea
     );
-  }, [coordinates, from, to]);
+  }, [coordinates, from, to, locationSetup]);
 
   const bottom = useMemo(() => {
-    return Math.min(
-      location?.latitude ?? 0,
-      ...(from ? [from.latitude] : []),
-      ...(to ? [to.latitude] : []),
-      ...coordinates.map((coord) => coord.latitude)
+    return (
+      Math.min(
+        location?.latitude ?? 0,
+        ...(from ? [from.latitude] : []),
+        ...(to ? [to.latitude] : []),
+        ...coordinates.map((coord) => coord.latitude)
+      ) - minArea
     );
-  }, [coordinates, from, to]);
+  }, [coordinates, from, to, locationSetup]);
 
   const left = useMemo(() => {
-    return Math.min(
-      location?.longitude ?? 0,
-      ...(from ? [from.longitude] : []),
-      ...(to ? [to.longitude] : []),
-      ...coordinates.map((coord) => coord.longitude)
+    return (
+      Math.min(
+        location?.longitude ?? 0,
+        ...(from ? [from.longitude] : []),
+        ...(to ? [to.longitude] : []),
+        ...coordinates.map((coord) => coord.longitude)
+      ) - minArea
     );
-  }, [coordinates, from, to]);
+  }, [coordinates, from, to, locationSetup]);
 
   const right = useMemo(() => {
-    return Math.max(
-      location?.longitude ?? 0,
-      ...(from ? [from.longitude] : []),
-      ...(to ? [to.longitude] : []),
-      ...coordinates.map((coord) => coord.longitude)
+    return (
+      Math.max(
+        location?.longitude ?? 0,
+        ...(from ? [from.longitude] : []),
+        ...(to ? [to.longitude] : []),
+        ...coordinates.map((coord) => coord.longitude)
+      ) + minArea
     );
-  }, [coordinates, from, to]);
+  }, [coordinates, from, to, locationSetup]);
 
   const midX = useMemo(() => {
     return (left + right) / 2;
@@ -204,6 +215,9 @@ export default function RouteView() {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
           });
+          if (!locationSetup) {
+            setLocationSetup(true);
+          }
 
           updateProgress(coordinates, {
             latitude: location.coords.latitude,
