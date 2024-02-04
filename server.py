@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from lambda_function import lambda_handler
+from backend.main import main
 app = Flask(__name__)
 
 @app.route('/')
@@ -8,13 +8,12 @@ def home():
 
 @app.route('/api/post/', methods=['POST'])
 def post():
-    print("some shjit")
     try:
         # handling a POST request with JSON data
         data = request.json
         if data is None:
             return jsonify({"error": "Bad Request", "message": "Missing or invalid data"}), 400
-        return lambda_handler(data['d'], None)
+        return main(data['from'], data['to'])
     except Exception as e:
         # Log the exception for debugging
         app.logger.error(f"Error: {e}")

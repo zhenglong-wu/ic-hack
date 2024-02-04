@@ -1,4 +1,4 @@
-from backend.model.predict import predict
+from backend.models.predict import predict
 import backend.graph_hopper_manager as graph_hopper_manager
 import json
 
