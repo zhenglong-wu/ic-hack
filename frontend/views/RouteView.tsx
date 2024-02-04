@@ -17,136 +17,12 @@ import {
 } from "react-native";
 import { colors } from "../Colors";
 import * as Location from "expo-location";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Searchbar } from "react-native-paper";
-
-const coordinates = [
-  [51.4990374, -0.1744124],
-  [51.49862, -0.17432],
-  [51.4985, -0.1743],
-  [51.49823, -0.17424],
-  [51.49814, -0.17424],
-  [51.4981403, -0.1742426],
-  [51.49809, -0.17491],
-  [51.49808, -0.17507],
-  [51.49807, -0.17516],
-  [51.49805, -0.17544],
-  [51.49804, -0.17555],
-  [51.49803, -0.17568],
-  [51.49797, -0.17646],
-  [51.49791, -0.17716],
-  [51.49787, -0.17774],
-  [51.49786, -0.17792],
-  [51.49783, -0.17821],
-  [51.49781, -0.17851],
-  [51.49785, -0.17861],
-  [51.49779, -0.17873],
-  [51.49777, -0.17896],
-  [51.49775, -0.17925],
-  [51.49774, -0.17931],
-  [51.4977411, -0.1793147],
-  [51.49772, -0.17931],
-  [51.49711, -0.17918],
-  [51.49703, -0.17917],
-  [51.49689, -0.17913],
-  [51.49683, -0.17911],
-  [51.4968, -0.17911],
-  [51.49667, -0.17908],
-  [51.49657, -0.17906],
-  [51.49627, -0.17899],
-  [51.49619, -0.17898],
-  [51.49594, -0.17893],
-  [51.49585, -0.17893],
-  [51.49566, -0.17886],
-  [51.49564, -0.17886],
-  [51.49554, -0.17884],
-  [51.49547, -0.17883],
-  [51.49545, -0.17882],
-  [51.49546, -0.17864],
-  [51.49544, -0.17863],
-  [51.49537, -0.17862],
-  [51.49536, -0.17881],
-  [51.49533, -0.17881],
-  [51.49533, -0.17876],
-  [51.49527, -0.17874],
-  [51.49525, -0.17874],
-  [51.49525, -0.17879],
-  [51.49519, -0.17878],
-  [51.49511, -0.17876],
-  [51.49469, -0.17868],
-  [51.49436, -0.1786],
-  [51.49429, -0.17859],
-  [51.49424, -0.17858],
-  [51.49409, -0.17855],
-  [51.49401, -0.17854],
-  [51.49394, -0.17852],
-  [51.49394, -0.17848],
-  [51.49392, -0.17847],
-  [51.49381, -0.17844],
-  [51.49379, -0.17844],
-  [51.49378, -0.17849],
-  [51.49376, -0.17848],
-  [51.493762, -0.1784813],
-  [51.49373, -0.17881],
-  [51.49374, -0.17881],
-  [51.49373, -0.17893],
-  [51.49371, -0.17905],
-  [51.49369, -0.17917],
-  [51.49368, -0.17923],
-  [51.49367, -0.17945],
-  [51.49365, -0.17961],
-  [51.49364, -0.17969],
-  [51.49362, -0.17992],
-  [51.49361, -0.18002],
-  [51.49359, -0.18012],
-  [51.49357, -0.18028],
-  [51.49354, -0.18042],
-  [51.4935, -0.18075],
-  [51.49345, -0.18092],
-  [51.49341, -0.18112],
-  [51.4934, -0.1812],
-  [51.49338, -0.18133],
-  [51.49336, -0.18144],
-  [51.49336, -0.18147],
-  [51.49334, -0.18158],
-  [51.49332, -0.18173],
-  [51.49332, -0.18174],
-  [51.49332, -0.18176],
-  [51.4933205, -0.1817638],
-  [51.4933, -0.1819],
-  [51.4933, -0.18193],
-  [51.49329, -0.182],
-  [51.49331, -0.18201],
-  [51.49341, -0.18205],
-  [51.49344, -0.18206],
-  [51.49343, -0.18211],
-  [51.49342, -0.18221],
-  [51.4934, -0.18227],
-  [51.4934, -0.18232],
-  [51.49333, -0.18274],
-  [51.49329, -0.18302],
-  [51.49328, -0.1831],
-  [51.49327, -0.18316],
-  [51.49324, -0.18334],
-  [51.4932405, -0.183337],
-].map((x) => {
-  return {
-    latitude: x[0],
-    longitude: x[1],
-  };
-});
+import RouteOption from "../components/RouteOption";
+import { Animated } from "react-native";
 
 const safeRadius = 1;
-
-const right = Math.max(...coordinates.map((coord) => coord.longitude));
-const left = Math.min(...coordinates.map((coord) => coord.longitude));
-const width = right - left;
-const midX = (right + left) / 2;
-
-const top = Math.max(...coordinates.map((coord) => coord.latitude));
-const bottom = Math.min(...coordinates.map((coord) => coord.latitude));
-const height = top - bottom;
-const midY = (top + bottom) / 2;
 
 const mapStyle = [
   {
@@ -386,13 +262,93 @@ const GEOLOCATION_OPTIONS: Location.LocationOptions = {
   mayShowUserSettingsDialog: true,
 };
 
-export default function RouteView() {
+export default function RouteView(props: {
+  routes: {
+    score: number;
+    walkingTime: number;
+    arrival: string;
+    points: { latitude: number; longitude: number }[];
+  }[];
+}) {
   const [location, setLocation] = useState(
     null as { latitude: number; longitude: number } | null
   );
   const [heading, setHeading] = useState(0);
   const [progress, setProgress] = useState(0);
   const [modalVisible, setModalVisible] = useState(true);
+
+  const [coordinates, setCoordinates] = useState(
+    [] as { latitude: number; longitude: number }[]
+  );
+
+  const top = useMemo(() => {
+    return Math.max(
+      location?.latitude ?? 0,
+      ...coordinates.map((coord) => coord.latitude)
+    );
+  }, [coordinates]);
+
+  const bottom = useMemo(() => {
+    return Math.min(
+      location?.latitude ?? 0,
+      ...coordinates.map((coord) => coord.latitude)
+    );
+  }, [coordinates]);
+
+  const left = useMemo(() => {
+    return Math.min(
+      location?.longitude ?? 0,
+      ...coordinates.map((coord) => coord.longitude)
+    );
+  }, [coordinates]);
+
+  const right = useMemo(() => {
+    return Math.max(
+      location?.longitude ?? 0,
+      ...coordinates.map((coord) => coord.longitude)
+    );
+  }, [coordinates]);
+
+  const midX = useMemo(() => {
+    return (left + right) / 2;
+  }, [left, right]);
+
+  const midY = useMemo(() => {
+    return (top + bottom) / 2;
+  }, [top, bottom]);
+
+  const width = useMemo(() => {
+    return right - left;
+  }, [left, right]);
+
+  const height = useMemo(() => {
+    return top - bottom;
+  }, [top, bottom]);
+
+  const updateProgress = (
+    coordinates: {
+      longitude: number;
+      latitude: number;
+    }[],
+    location: {
+      longitude: number;
+      latitude: number;
+    }
+  ) => {
+    let p = null;
+    let min = Infinity;
+    for (let i = 0; i < coordinates.length; i++) {
+      let dx = location.latitude - coordinates[i].latitude;
+      let dy = location.longitude - coordinates[i].longitude;
+      let dist = dx * dx + dy * dy;
+      if (dist < min) {
+        p = i;
+        min = dist;
+      }
+    }
+
+    if (p !== null) setProgress(p);
+  };
 
   useEffect(() => {
     (async () => {
@@ -409,19 +365,10 @@ export default function RouteView() {
             longitude: location.coords.longitude,
           });
 
-          let p = 0;
-          let min = Infinity;
-          for (let i = 0; i < coordinates.length; i++) {
-            let dx = location.coords.latitude - coordinates[i].latitude;
-            let dy = location.coords.longitude - coordinates[i].longitude;
-            let dist = dx * dx + dy * dy;
-            if (dist < min) {
-              p = i;
-              min = dist;
-            }
-          }
-
-          setProgress(p);
+          updateProgress(coordinates, {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          });
         });
 
         await Location.watchHeadingAsync((heading) => {
@@ -431,14 +378,31 @@ export default function RouteView() {
         console.error("Error watching position: ", error);
       }
     })();
-  }, []);
+  }, [coordinates]);
 
-  const [searchbarText, setSearchBarText] = useState("")
+  const [searchbarText, setSearchBarText] = useState("");
+
+  const [selectedOption, setSelectedOption] = useState(0);
+
+  const selectOption = (number: number) => {
+    setSelectedOption(number);
+  };
+
+  const confirmDestination = () => {
+    // TODO: Update coordinates from server
+    setCoordinates(props.routes[selectedOption].points);
+    if (location) updateProgress(props.routes[selectedOption].points, location);
+    setModalVisible(false);
+  };
 
   return (
     <View style={styles.view}>
-      <Searchbar style={{ position: 'absolute', top: 50, zIndex: 23,
-                }} placeholder="Search" value={searchbarText} onChangeText={setSearchBarText} />
+      <Searchbar
+        style={{ position: "absolute", top: 50, zIndex: 23 }}
+        placeholder="Search"
+        value={searchbarText}
+        onChangeText={setSearchBarText}
+      />
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
@@ -504,15 +468,25 @@ export default function RouteView() {
       </MapView>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.routes}>
-          <Text>
-            <Text style={{ color: "green" }}>95%</Text> safety score
-          </Text>
-          <Text style={{ marginBottom: 10 }}>
-            25 min | 1.2 mi | Mostly flat
-          </Text>
-          <View style={styles.confirmButton}>
+          {props.routes.map((route, index) => {
+            return (
+              <RouteOption
+                key={index}
+                score={route.score}
+                walkingTime={route.walkingTime}
+                arrival={route.arrival}
+                index={index}
+                selected={selectedOption === index}
+                selectOption={selectOption}
+              />
+            );
+          })}
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={confirmDestination}
+          >
             <Text style={styles.confirmButtonText}>Confirm Destination</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </Modal>
     </View>
@@ -543,14 +517,15 @@ const styles = StyleSheet.create({
   },
   routes: {
     backgroundColor: "white",
-    padding: 30,
+    padding: 20,
     position: "absolute",
     width: "100%",
     bottom: 0,
-    borderTopEndRadius: 20,
-    borderTopLeftRadius: 20,
+    borderTopEndRadius: 12,
+    borderTopLeftRadius: 12,
   },
   confirmButton: {
+    marginTop: 15,
     backgroundColor: colors.buttonBg,
     padding: 16,
     borderRadius: 10,
