@@ -264,7 +264,7 @@ const GEOLOCATION_OPTIONS: Location.LocationOptions = {
   distanceInterval: 1,
   mayShowUserSettingsDialog: true,
 };
-0
+0;
 const GOOGLE_PACES_API_BASE_URL = "https://maps.googleapis.com/maps/api/place";
 
 export default function RouteView(props: {
@@ -286,35 +286,52 @@ export default function RouteView(props: {
     [] as { latitude: number; longitude: number }[]
   );
 
+  const [map, setMap] = useState(null as MapView | null);
+
+  const [from, setFrom] = useState(
+    null as { latitude: number; longitude: number } | null
+  );
+  const [to, setTo] = useState(
+    null as { latitude: number; longitude: number } | null
+  );
+
   const [wasFrom, setWasFrom] = useState(false);
 
   const top = useMemo(() => {
     return Math.max(
       location?.latitude ?? 0,
+      ...(from ? [from.latitude] : []),
+      ...(to ? [to.latitude] : []),
       ...coordinates.map((coord) => coord.latitude)
     );
-  }, [coordinates]);
+  }, [coordinates, from, to]);
 
   const bottom = useMemo(() => {
     return Math.min(
       location?.latitude ?? 0,
+      ...(from ? [from.latitude] : []),
+      ...(to ? [to.latitude] : []),
       ...coordinates.map((coord) => coord.latitude)
     );
-  }, [coordinates]);
+  }, [coordinates, from, to]);
 
   const left = useMemo(() => {
     return Math.min(
       location?.longitude ?? 0,
+      ...(from ? [from.longitude] : []),
+      ...(to ? [to.longitude] : []),
       ...coordinates.map((coord) => coord.longitude)
     );
-  }, [coordinates]);
+  }, [coordinates, from, to]);
 
   const right = useMemo(() => {
     return Math.max(
       location?.longitude ?? 0,
+      ...(from ? [from.longitude] : []),
+      ...(to ? [to.longitude] : []),
       ...coordinates.map((coord) => coord.longitude)
     );
-  }, [coordinates]);
+  }, [coordinates, from, to]);
 
   const midX = useMemo(() => {
     return (left + right) / 2;
@@ -331,6 +348,15 @@ export default function RouteView(props: {
   const height = useMemo(() => {
     return top - bottom;
   }, [top, bottom]);
+
+  useMemo(() => {
+    map?.animateToRegion({
+      latitude: midY,
+      longitude: midX,
+      latitudeDelta: height * 1.5,
+      longitudeDelta: width * 1.5,
+    });
+  }, [midX, midY, width, height]);
 
   const updateProgress = (
     coordinates: {
@@ -386,7 +412,9 @@ export default function RouteView(props: {
       }
     })();
   }, [coordinates]);
-  const [uiState, setUiState] = useState<'destination' | 'safety' | 'navigation'>('destination');
+  const [uiState, setUiState] = useState<
+    "destination" | "safety" | "navigation"
+  >("destination");
 
   const [searchbarText, setSearchBarText] = useState("");
 
@@ -406,7 +434,7 @@ export default function RouteView(props: {
     setCoordinates(props.routes[selectedOption].points);
     if (location) updateProgress(props.routes[selectedOption].points, location);
     setModalVisible(false);
-    setUiState('navigation');
+    setUiState("navigation");
   };
 
   const [predictions, setPredictions] = useState<
@@ -458,8 +486,10 @@ export default function RouteView(props: {
         const { lat, lng } = location;
         setPredictions([]);
         if (wasFrom) {
+          setFrom({ latitude: lat, longitude: lng });
           setFromText(description);
         } else {
+          setTo({ latitude: lat, longitude: lng });
           setToText(description);
         }
       }
@@ -470,6 +500,9 @@ export default function RouteView(props: {
   return (
     <View style={styles.view}>
       <MapView
+        ref={(m) => {
+          setMap(m);
+        }}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         customMapStyle={mapStyle}
@@ -481,39 +514,48 @@ export default function RouteView(props: {
         }}
       >
         <Polyline
-          coordinates={coordinates.slice(0, progress + 1)}
+          coordinates={
+            from
+              ? [from, ...coordinates.slice(0, progress + 1)]
+              : coordinates.slice(0, progress + 1)
+          }
           strokeColor={colors.routePassed}
           strokeWidth={6}
         ></Polyline>
         <Polyline
-          coordinates={coordinates.slice(progress)}
+          coordinates={
+            to
+              ? [...coordinates.slice(progress), to]
+              : coordinates.slice(progress)
+          }
           strokeColor={colors.route}
           strokeWidth={6}
         ></Polyline>
-        <Marker
-          coordinate={coordinates[coordinates.length - 1]}
-          anchor={{ x: 0.5, y: 0.5 }}
-        >
-          <View
-            style={[
-              {
-                backgroundColor: colors.route,
-              },
-              styles.marker,
-            ]}
-          ></View>
-        </Marker>
+        {to ? (
+          <Marker coordinate={to} anchor={{ x: 0.5, y: 0.5 }}>
+            <View
+              style={[
+                {
+                  backgroundColor: colors.route,
+                },
+                styles.marker,
+              ]}
+            ></View>
+          </Marker>
+        ) : null}
 
-        <Marker coordinate={coordinates[0]} anchor={{ x: 0.5, y: 0.5 }}>
-          <View
-            style={[
-              {
-                backgroundColor: colors.routePassed,
-              },
-              styles.marker,
-            ]}
-          ></View>
-        </Marker>
+        {from ? (
+          <Marker coordinate={from}>
+            <View
+              style={[
+                {
+                  backgroundColor: colors.routePassed,
+                },
+                styles.marker,
+              ]}
+            ></View>
+          </Marker>
+        ) : null}
         {location ? (
           <>
             <Marker coordinate={location} anchor={{ x: 0.5, y: 0.5 }}>
@@ -566,82 +608,84 @@ export default function RouteView(props: {
             paddingHorizontal: 20,
           }}
         >
-          { uiState !== 'destination' && uiState !== 'safety' ? '' :
-          <>
-          <View
-            style={[
-              styles.searchfield,
-              {
-                borderBottomColor: "#e0e0e0",
-                borderBottomWidth: 1,
-              },
-            ]}
-          >
-            <Image
-              source={require("../assets/left.png")}
-              style={{
-                width: 15,
-                height: 15,
-              }}
-            />
-            <TextInput
-              caretHidden={false}
-              numberOfLines={1}
-              multiline={false}
-              value={fromText}
-              underlineColor="transparent"
-              activeUnderlineColor="transparent"
-              placeholder="From"
-              placeholderTextColor={"#a0a0a0"}
-              cursorColor="#404040"
-              onChangeText={(text) => {
-                setFromText(text);
-                setWasFrom(true);
-                onChangeText(text);
-              }}
-              style={{
-                fontFamily: "body",
-                flex: 1,
-                height: 50,
-                backgroundColor: "transparent",
-                textAlign: "auto",
-              }}
-            ></TextInput>
-          </View>
-          <View style={styles.searchfield}>
-            <Image
-              source={require("../assets/right.png")}
-              style={{
-                width: 15,
-                height: 15,
-              }}
-            />
-            <TextInput
-              caretHidden={false}
-              numberOfLines={1}
-              multiline={false}
-              value={toText}
-              underlineColor="transparent"
-              activeUnderlineColor="transparent"
-              placeholder="To"
-              placeholderTextColor={"#a0a0a0"}
-              cursorColor="#404040"
-              onChangeText={(text) => {
-                setToText(text);
-                setWasFrom(false);
-                onChangeText(text);
-              }}
-              style={{
-                fontFamily: "body",
-                flex: 1,
-                height: 50,
-                backgroundColor: "transparent",
-                textAlign: "auto",
-              }}
-            ></TextInput>
-          </View>
-          </>
-          }
+          {uiState !== "destination" && uiState !== "safety" ? (
+            ""
+          ) : (
+            <>
+              <View
+                style={[
+                  styles.searchfield,
+                  {
+                    borderBottomColor: "#e0e0e0",
+                    borderBottomWidth: 1,
+                  },
+                ]}
+              >
+                <Image
+                  source={require("../assets/left.png")}
+                  style={{
+                    width: 15,
+                    height: 15,
+                  }}
+                />
+                <TextInput
+                  caretHidden={false}
+                  numberOfLines={1}
+                  multiline={false}
+                  value={fromText}
+                  underlineColor="transparent"
+                  activeUnderlineColor="transparent"
+                  placeholder="From"
+                  placeholderTextColor={"#a0a0a0"}
+                  cursorColor="#404040"
+                  onChangeText={(text) => {
+                    setFromText(text);
+                    setWasFrom(true);
+                    onChangeText(text);
+                  }}
+                  style={{
+                    fontFamily: "body",
+                    flex: 1,
+                    height: 50,
+                    backgroundColor: "transparent",
+                    textAlign: "auto",
+                  }}
+                ></TextInput>
+              </View>
+              <View style={styles.searchfield}>
+                <Image
+                  source={require("../assets/right.png")}
+                  style={{
+                    width: 15,
+                    height: 15,
+                  }}
+                />
+                <TextInput
+                  caretHidden={false}
+                  numberOfLines={1}
+                  multiline={false}
+                  value={toText}
+                  underlineColor="transparent"
+                  activeUnderlineColor="transparent"
+                  placeholder="To"
+                  placeholderTextColor={"#a0a0a0"}
+                  cursorColor="#404040"
+                  onChangeText={(text) => {
+                    setToText(text);
+                    setWasFrom(false);
+                    onChangeText(text);
+                  }}
+                  style={{
+                    fontFamily: "body",
+                    flex: 1,
+                    height: 50,
+                    backgroundColor: "transparent",
+                    textAlign: "auto",
+                  }}
+                ></TextInput>
+              </View>
+            </>
+          )}
         </View>
         <ScrollView
           style={{
@@ -655,24 +699,26 @@ export default function RouteView(props: {
             return (
               <TouchableOpacity
                 onPress={(e) => {
-                    onPredictionTapped(
-                      prediction.place_id,
-                      prediction.description
-                    )
-                    let _fromTextSelected = false
-                    let _toTextSelected = false
-                    if (wasFrom) {
-                      _fromTextSelected = true
-                      setFromTextSelected(true)
-                    } else {
-                      _toTextSelected = true
-                      setToTextSelected(true)
-                    }
-                    if ((fromTextSelected || _fromTextSelected) && (toTextSelected || _toTextSelected)) {
-                      setUiState('safety')
-                    }
+                  onPredictionTapped(
+                    prediction.place_id,
+                    prediction.description
+                  );
+                  let _fromTextSelected = false;
+                  let _toTextSelected = false;
+                  if (wasFrom) {
+                    _fromTextSelected = true;
+                    setFromTextSelected(true);
+                  } else {
+                    _toTextSelected = true;
+                    setToTextSelected(true);
                   }
-                }
+                  if (
+                    (fromTextSelected || _fromTextSelected) &&
+                    (toTextSelected || _toTextSelected)
+                  ) {
+                    setUiState("safety");
+                  }
+                }}
                 key={index}
               >
                 <View
@@ -697,31 +743,33 @@ export default function RouteView(props: {
           })}
         </ScrollView>
       </View>
-      { uiState !== 'safety' ? '' :
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={styles.routes}>
-          {props.routes.map((route, index) => {
-            return (
-              <RouteOption
-                key={index}
-                score={route.score}
-                walkingTime={route.walkingTime}
-                arrival={route.arrival}
-                index={index}
-                selected={selectedOption === index}
-                selectOption={selectOption}
-              />
-            );
-          })}
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={confirmDestination}
-          >
-            <Text style={styles.confirmButtonText}>Confirm Destination</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      }
+      {uiState !== "safety" ? (
+        ""
+      ) : (
+        <Modal animationType="slide" transparent={true} visible={modalVisible}>
+          <View style={styles.routes}>
+            {props.routes.map((route, index) => {
+              return (
+                <RouteOption
+                  key={index}
+                  score={route.score}
+                  walkingTime={route.walkingTime}
+                  arrival={route.arrival}
+                  index={index}
+                  selected={selectedOption === index}
+                  selectOption={selectOption}
+                />
+              );
+            })}
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={confirmDestination}
+            >
+              <Text style={styles.confirmButtonText}>Confirm Destination</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      )}
       {/* <Modal>
         <View>
           <Text>Test</Text>
