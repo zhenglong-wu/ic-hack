@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { colors } from "../Colors";
 import * as Location from "expo-location";
 import { useEffect, useMemo, useState } from "react";
@@ -397,11 +398,21 @@ export default function RouteView(props: {
 
   return (
     <View style={styles.view}>
-      <Searchbar
-        style={{ position: "absolute", top: 50, zIndex: 23 }}
+      <GooglePlacesAutocomplete
+        styles={{
+          textInputContainer: {
+            zIndex: 100,
+            position: 'absolute',
+            top: 100
+          }
+        }}
         placeholder="Search"
-        value={searchbarText}
-        onChangeText={setSearchBarText}
+        query={{
+          key: 'AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I',
+          language: 'en', // language of the results
+        }}
+        onPress={(data, details = null) => console.log(data)}
+        onFail={(error) => console.error(error)}
       />
       <MapView
         provider={PROVIDER_GOOGLE}
