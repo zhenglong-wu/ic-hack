@@ -423,9 +423,7 @@ export default function RouteView(props: {
 
   const onChangeText = async (text: string) => {
     if (text.trim() === "") return;
-    const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/nearbysearch/` + 
-        `json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&keyword=${text}` +
-        `&location=${location?.latitude},${location?.longitude}&radius=20000`;
+    const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/autocomplete/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&input=${text}`;
     try {
       const result = await axios.request({
         method: "post",
