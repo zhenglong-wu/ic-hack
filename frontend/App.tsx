@@ -145,28 +145,7 @@ export default function App() {
       }}
       onLayout={onLayoutRootView}
     >
-      <RouteView
-        routes={[
-          {
-            score: 10,
-            walkingTime: 20,
-            arrival: "12:00",
-            points: testCoordinates,
-          },
-          {
-            score: 7,
-            walkingTime: 30,
-            arrival: "12:10",
-            points: testCoordinates,
-          },
-          {
-            score: 4,
-            walkingTime: 40,
-            arrival: "12:20",
-            points: testCoordinates,
-          },
-        ]}
-      ></RouteView>
+      <RouteView></RouteView>
     </View>
   );
 }

@@ -24,6 +24,7 @@ import { Searchbar, TextInput } from "react-native-paper";
 import RouteOption from "../components/RouteOption";
 import { Animated } from "react-native";
 import axios from "axios";
+import { dummy } from "../Dummydata";
 
 const safeRadius = 1;
 
@@ -267,14 +268,7 @@ const GEOLOCATION_OPTIONS: Location.LocationOptions = {
 0;
 const GOOGLE_PACES_API_BASE_URL = "https://maps.googleapis.com/maps/api/place";
 
-export default function RouteView(props: {
-  routes: {
-    score: number;
-    walkingTime: number;
-    arrival: string;
-    points: { latitude: number; longitude: number }[];
-  }[];
-}) {
+export default function RouteView() {
   const [location, setLocation] = useState(
     null as { latitude: number; longitude: number } | null
   );
@@ -425,14 +419,30 @@ export default function RouteView(props: {
   const [toText, setToText] = useState("");
   const [toTextSelected, setToTextSelected] = useState(false);
 
+  const [data, setData] = useState(dummy);
+
+  const [routes, setRoutes] = useState(
+    [] as {
+      score: number;
+      walkingTime: number;
+      arrival: string;
+      points: { latitude: number; longitude: number }[];
+    }[]
+  );
+
   const selectOption = (number: number) => {
     setSelectedOption(number);
   };
 
   const confirmDestination = () => {
-    // TODO: Update coordinates from server
-    setCoordinates(props.routes[selectedOption].points);
-    if (location) updateProgress(props.routes[selectedOption].points, location);
+    const coords = data.data.paths[selectedOption].points.coordinates.map(
+      (x) => {
+        return { latitude: x[1], longitude: x[0] };
+      }
+    );
+
+    setCoordinates(coords);
+    if (location) updateProgress(coords, location);
     setModalVisible(false);
     setUiState("navigation");
   };
@@ -497,6 +507,29 @@ export default function RouteView(props: {
       console.log(e);
     }
   };
+
+  const loadRoutes = async () => {
+    // TODO: get from server
+
+    setRoutes(
+      data.data.paths.map((x) => {
+        const arrivalTime = new Date(Date.now() + x.time);
+        return {
+          score: Math.round(x.safety_score * 10),
+          walkingTime: x.time / 60000,
+          arrival: `${arrivalTime.getHours()}:${arrivalTime.getMinutes()}`,
+          points: x.points.coordinates.map((x: any) => {
+            return {
+              latitude: x[1],
+              longitude: x[0],
+            };
+          }),
+        };
+      })
+    );
+    setUiState("safety");
+  };
+
   return (
     <View style={styles.view}>
       <MapView
@@ -716,7 +749,7 @@ export default function RouteView(props: {
                     (fromTextSelected || _fromTextSelected) &&
                     (toTextSelected || _toTextSelected)
                   ) {
-                    setUiState("safety");
+                    loadRoutes();
                   }
                 }}
                 key={index}
@@ -748,7 +781,7 @@ export default function RouteView(props: {
       ) : (
         <Modal animationType="slide" transparent={true} visible={modalVisible}>
           <View style={styles.routes}>
-            {props.routes.map((route, index) => {
+            {routes.map((route, index) => {
               return (
                 <RouteOption
                   key={index}
@@ -758,6 +791,7 @@ export default function RouteView(props: {
                   index={index}
                   selected={selectedOption === index}
                   selectOption={selectOption}
+                  safest={index === 0}
                 />
               );
             })}

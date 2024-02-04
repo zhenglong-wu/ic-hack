@@ -61,7 +61,7 @@ export default function RouteOption(props: {
             </View>
           ) : null}
           <Text style={styles.walkingTime}>
-            {props.walkingTime} Minutes Walk
+            {Math.round(props.walkingTime)} Minutes Walk
           </Text>
           <Text style={styles.algorithm}>
             Our algorithm calculated that this route avoids dangerous areas
