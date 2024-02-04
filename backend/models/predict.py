@@ -1,7 +1,7 @@
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
-
+from tensorflow.keras.optimizers.legacy import Adam
 
 def create_model():
 
@@ -28,8 +28,9 @@ def predict(long: float, lat: float):
     scaler = MinMaxScaler()
 
     model = create_model()
-    model.load_weights("backend/model/training_1/cp1.ckpt")
-    model.compile(optimizer='adam', loss='mse') 
+    model.load_weights("backend/models/cnn_model/training_1/cp1.ckpt")
+    model.compile(optimizer=tf.keras.optimizers.legacy.Adam(
+        learning_rate=0.001), loss='mse') 
 
     data = scaler.fit_transform([[long, lat]]).reshape(1, 2, 1)
     return model.predict(data, len(data))

@@ -1,5 +1,5 @@
 from backend.model.predict import predict
-import backend.routing.graph_hopper_manager as graph_hopper_manager
+import backend.graph_hopper_manager as graph_hopper_manager
 import json
 
 def lambda_handler(dept, dest):

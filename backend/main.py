@@ -1,5 +1,5 @@
-from predict import predict
-import backend.routing.graph_hopper_manager as graph_hopper_manager
+from models.predict import predict
+import graph_hopper_manager
 import json
 
 def main(dept, dest):
@@ -15,8 +15,9 @@ def main(dept, dest):
             else:
                 path['safety_score'].append(sum(scores)/len(scores))
             print('fin')
+            
         return json.dumps(route)
-    
+
     except Exception as error: 
         print(error)
         return
