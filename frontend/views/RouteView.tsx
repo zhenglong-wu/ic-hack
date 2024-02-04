@@ -285,9 +285,10 @@ export default function RouteView() {
 
   const onChangeText = async (text: string) => {
     if (text.trim() === "") return;
-    const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/autocomplete/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&input=${text}`;
+    const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/autocomplete/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&input=${text}`
+      + `&location=${location?.latitude},${location?.longitude}&radius=10000`;
     try {
-      const result = await axios.request({
+      const result = text === '' ? {data: []} : await axios.request({
         method: "post",
         url: apiUrl,
       });
