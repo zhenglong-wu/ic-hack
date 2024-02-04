@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from backend.main import main
+from backend.routing.graph_hopper_manager import get_route
 app = Flask(__name__)
 
 @app.route('/')
@@ -8,16 +9,45 @@ def home():
 
 @app.route('/api/post/', methods=['POST'])
 def post():
+    print("POST")
     try:
         # handling a POST request with JSON data
         data = request.json
+        print("Data in is: " + data)
         if data is None:
             return jsonify({"error": "Bad Request", "message": "Missing or invalid data"}), 400
-        return main(data['from'], data['to'])
+        print("Returning:")
+        dat = get_route(data['from'], data['to'])
+        print(dat)
+        return dat
+
     except Exception as e:
         # Log the exception for debugging
         app.logger.error(f"Error: {e}")
         return jsonify({"error": "Internal Server Error", "message": str(e)}), 500
 
+@app.route('/api/get/', methods=['GET'])
+def get():
+    print("GET")
+    try:
+        # handling a GET request with query parameters
+        from_param = [request.args.get('fromLang'), request.args.get('fromLat')]
+        to_param = [request.args.get('toLang'), request.args.get('toLat')]
+
+        print(f"Data in is: from={from_param}, to={to_param}")
+
+        if not from_param or not to_param:
+            return jsonify({"error": "Bad Request", "message": "Missing or invalid parameters"}), 400
+
+        print("Returning:")
+        dat = get_route(from_param, to_param)
+        print(dat)
+        return dat
+
+    except Exception as e:
+        # Log the exception for debugging
+        app.logger.error(f"Error: {e}")
+        return jsonify({"error": "Internal Server Error", "message": str(e)}), 500
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
