@@ -244,7 +244,17 @@ export default function RouteView() {
   const [toText, setToText] = useState("");
   const [toTextSelected, setToTextSelected] = useState(false);
 
-  const [data, setData] = useState(dummy);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    console.log("post req")
+    console.log(JSON.stringify({
+      from: [from?.longitude, from?.latitude],
+      to: [to?.longitude, to?.latitude]
+    }))
+    axios.get(`http://146.169.139.107:5001/api/get/?fromLong=${from?.longitude}&fromLat=${from?.latitude}&toLong=${to?.longitude}&toLat=${to?.latitude}`
+    ).then((d) => console.log(d)
+    ).catch(d => console.log(d))
+  }, [from, to])
 
   const [routes, setRoutes] = useState(
     [] as {
