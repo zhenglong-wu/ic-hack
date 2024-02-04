@@ -3,7 +3,7 @@ import MapView, {
   Marker,
   PROVIDER_GOOGLE,
   Polyline,
-} from 'react-native-maps';
+} from "react-native-maps";
 import {
   StyleSheet,
   View,
@@ -15,245 +15,42 @@ import {
   TouchableOpacity,
   Modal,
   ScrollView,
-} from 'react-native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { colors } from '../Colors';
-import * as Location from 'expo-location';
-import { useEffect, useMemo, useState } from 'react';
-import { Searchbar, TextInput } from 'react-native-paper';
-import RouteOption from '../components/RouteOption';
-import { Animated } from 'react-native';
-import axios from 'axios';
-import { dummy } from '../Dummydata';
+} from "react-native";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { colors } from "../Colors";
+import * as Location from "expo-location";
+import { useEffect, useMemo, useState } from "react";
+import { Searchbar, TextInput } from "react-native-paper";
+import RouteOption from "../components/RouteOption";
+import { Animated } from "react-native";
+import axios from "axios";
+import { dummy } from "../Dummydata";
 
 const safeRadius = 1;
 
 const mapStyle = [
   {
-    elementType: 'geometry',
+    featureType: "poi.business",
     stylers: [
       {
-        color: '#212121',
+        visibility: "off",
       },
     ],
   },
   {
-    elementType: 'labels',
+    featureType: "road",
+    elementType: "labels.icon",
     stylers: [
       {
-        visibility: 'off',
+        visibility: "off",
       },
     ],
   },
   {
-    elementType: 'labels.icon',
+    featureType: "transit",
     stylers: [
       {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#757575',
-      },
-    ],
-  },
-  {
-    elementType: 'labels.text.stroke',
-    stylers: [
-      {
-        color: '#212121',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#757575',
-      },
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.country',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#9e9e9e',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.land_parcel',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.locality',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#bdbdbd',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.neighborhood',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'poi',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#757575',
-      },
-    ],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#181818',
-      },
-    ],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#616161',
-      },
-    ],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'labels.text.stroke',
-    stylers: [
-      {
-        color: '#1b1b1b',
-      },
-    ],
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry.fill',
-    stylers: [
-      {
-        color: '#2c2c2c',
-      },
-    ],
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.icon',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#8a8a8a',
-      },
-    ],
-  },
-  {
-    featureType: 'road.arterial',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#373737',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#3c3c3c',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway.controlled_access',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#4e4e4e',
-      },
-    ],
-  },
-  {
-    featureType: 'road.local',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#616161',
-      },
-    ],
-  },
-  {
-    featureType: 'transit',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'transit',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#757575',
-      },
-    ],
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#000000',
-      },
-    ],
-  },
-  {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#3d3d3d',
+        visibility: "off",
       },
     ],
   },
@@ -266,17 +63,17 @@ const GEOLOCATION_OPTIONS: Location.LocationOptions = {
   mayShowUserSettingsDialog: true,
 };
 
-const GOOGLE_PACES_API_BASE_URL = 'https://maps.googleapis.com/maps/api/place';
+const GOOGLE_PACES_API_BASE_URL = "https://maps.googleapis.com/maps/api/place";
 
 export default function RouteView() {
   const [location, setLocation] = useState(
-    null as { latitude: number; longitude: number } | null,
+    null as { latitude: number; longitude: number } | null
   );
   const [heading, setHeading] = useState(0);
   const [progress, setProgress] = useState(0);
 
   const [coordinates, setCoordinates] = useState(
-    [] as { latitude: number; longitude: number }[],
+    [] as { latitude: number; longitude: number }[]
   );
 
   const [instruction, setInstruction] = useState(0);
@@ -284,10 +81,10 @@ export default function RouteView() {
   const [map, setMap] = useState(null as MapView | null);
 
   const [from, setFrom] = useState(
-    null as { latitude: number; longitude: number } | null,
+    null as { latitude: number; longitude: number } | null
   );
   const [to, setTo] = useState(
-    null as { latitude: number; longitude: number } | null,
+    null as { latitude: number; longitude: number } | null
   );
 
   const [wasFrom, setWasFrom] = useState(false);
@@ -297,7 +94,7 @@ export default function RouteView() {
       location?.latitude ?? 0,
       ...(from ? [from.latitude] : []),
       ...(to ? [to.latitude] : []),
-      ...coordinates.map((coord) => coord.latitude),
+      ...coordinates.map((coord) => coord.latitude)
     );
   }, [coordinates, from, to]);
 
@@ -306,7 +103,7 @@ export default function RouteView() {
       location?.latitude ?? 0,
       ...(from ? [from.latitude] : []),
       ...(to ? [to.latitude] : []),
-      ...coordinates.map((coord) => coord.latitude),
+      ...coordinates.map((coord) => coord.latitude)
     );
   }, [coordinates, from, to]);
 
@@ -315,7 +112,7 @@ export default function RouteView() {
       location?.longitude ?? 0,
       ...(from ? [from.longitude] : []),
       ...(to ? [to.longitude] : []),
-      ...coordinates.map((coord) => coord.longitude),
+      ...coordinates.map((coord) => coord.longitude)
     );
   }, [coordinates, from, to]);
 
@@ -324,7 +121,7 @@ export default function RouteView() {
       location?.longitude ?? 0,
       ...(from ? [from.longitude] : []),
       ...(to ? [to.longitude] : []),
-      ...coordinates.map((coord) => coord.longitude),
+      ...coordinates.map((coord) => coord.longitude)
     );
   }, [coordinates, from, to]);
 
@@ -361,7 +158,7 @@ export default function RouteView() {
     location: {
       longitude: number;
       latitude: number;
-    },
+    }
   ) => {
     let p = null;
     let min = Infinity;
@@ -396,8 +193,8 @@ export default function RouteView() {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Permission to access location was denied');
+      if (status !== "granted") {
+        console.error("Permission to access location was denied");
         return;
       }
 
@@ -418,7 +215,7 @@ export default function RouteView() {
           setHeading(heading.trueHeading);
         });
       } catch (error) {
-        console.error('Error watching position: ', error);
+        console.error("Error watching position: ", error);
       }
     })();
   }, [coordinates]);
@@ -428,9 +225,9 @@ export default function RouteView() {
 
   const [selectedOption, setSelectedOption] = useState(0);
 
-  const [fromText, setFromText] = useState('');
+  const [fromText, setFromText] = useState("");
   const [fromTextSelected, setFromTextSelected] = useState(false);
-  const [toText, setToText] = useState('');
+  const [toText, setToText] = useState("");
   const [toTextSelected, setToTextSelected] = useState(false);
 
   const [data, setData] = useState(dummy);
@@ -441,7 +238,7 @@ export default function RouteView() {
       walkingTime: number;
       arrival: string;
       points: { latitude: number; longitude: number }[];
-    }[],
+    }[]
   );
 
   const selectOption = (number: number) => {
@@ -452,12 +249,12 @@ export default function RouteView() {
     const coords = data.data.paths[selectedOption].points.coordinates.map(
       (x) => {
         return { latitude: x[1], longitude: x[0] };
-      },
+      }
     );
 
     setCoordinates(coords);
     if (location) updateProgress(coords, location);
-    setUiState('navigation');
+    setUiState("navigation");
   };
 
   const [predictions, setPredictions] = useState<
@@ -473,11 +270,11 @@ export default function RouteView() {
   >([]);
 
   const onChangeText = async (text: string) => {
-    if (text.trim() === '') return;
+    if (text.trim() === "") return;
     const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/autocomplete/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&input=${text}`;
     try {
       const result = await axios.request({
-        method: 'post',
+        method: "post",
         url: apiUrl,
       });
       if (result) {
@@ -495,7 +292,7 @@ export default function RouteView() {
     const apiUrl = `${GOOGLE_PACES_API_BASE_URL}/details/json?key=AIzaSyCWSTzuX68Fyez5LAEWECiV6f1DnawsY8I&place_id=${placeId}`;
     try {
       const result = await axios.request({
-        method: 'post',
+        method: "post",
         url: apiUrl,
       });
       if (result) {
@@ -542,9 +339,9 @@ export default function RouteView() {
             };
           }),
         };
-      }),
+      })
     );
-    setUiState('safety');
+    setUiState("safety");
   };
 
   return (
@@ -612,7 +409,7 @@ export default function RouteView() {
               <View style={styles.currentBg}></View>
 
               <Image
-                source={require('../assets/navigation.png')}
+                source={require("../assets/navigation.png")}
                 style={[
                   {
                     transform: [{ rotate: `${heading - 45}deg` }],
@@ -644,35 +441,35 @@ export default function RouteView() {
       <View
         style={{
           zIndex: 100,
-          position: 'absolute',
+          position: "absolute",
           top: 10,
           left: 0,
           right: 0,
           margin: 20,
         }}
       >
-        {uiState !== 'destination' && uiState !== 'safety' ? (
-          ''
+        {uiState !== "destination" && uiState !== "safety" ? (
+          ""
         ) : (
           <View
             style={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               borderRadius: 10,
               paddingHorizontal: 20,
-              marginTop: 20
+              marginTop: 20,
             }}
           >
             <View
               style={[
                 styles.searchfield,
                 {
-                  borderBottomColor: '#e0e0e0',
+                  borderBottomColor: "#e0e0e0",
                   borderBottomWidth: 1,
                 },
               ]}
             >
               <Image
-                source={require('../assets/left.png')}
+                source={require("../assets/left.png")}
                 style={{
                   width: 15,
                   height: 15,
@@ -686,7 +483,7 @@ export default function RouteView() {
                 underlineColor="transparent"
                 activeUnderlineColor="transparent"
                 placeholder="From"
-                placeholderTextColor={'#a0a0a0'}
+                placeholderTextColor={"#a0a0a0"}
                 cursorColor="#404040"
                 onChangeText={(text) => {
                   setFromText(text);
@@ -694,17 +491,17 @@ export default function RouteView() {
                   onChangeText(text);
                 }}
                 style={{
-                  fontFamily: 'body',
+                  fontFamily: "body",
                   flex: 1,
                   height: 50,
-                  backgroundColor: 'transparent',
-                  textAlign: 'auto',
+                  backgroundColor: "transparent",
+                  textAlign: "auto",
                 }}
               ></TextInput>
             </View>
             <View style={styles.searchfield}>
               <Image
-                source={require('../assets/right.png')}
+                source={require("../assets/right.png")}
                 style={{
                   width: 15,
                   height: 15,
@@ -718,7 +515,7 @@ export default function RouteView() {
                 underlineColor="transparent"
                 activeUnderlineColor="transparent"
                 placeholder="To"
-                placeholderTextColor={'#a0a0a0'}
+                placeholderTextColor={"#a0a0a0"}
                 cursorColor="#404040"
                 onChangeText={(text) => {
                   setToText(text);
@@ -726,11 +523,11 @@ export default function RouteView() {
                   onChangeText(text);
                 }}
                 style={{
-                  fontFamily: 'body',
+                  fontFamily: "body",
                   flex: 1,
                   height: 50,
-                  backgroundColor: 'transparent',
-                  textAlign: 'auto',
+                  backgroundColor: "transparent",
+                  textAlign: "auto",
                 }}
               ></TextInput>
             </View>
@@ -739,7 +536,7 @@ export default function RouteView() {
         <ScrollView
           style={{
             marginTop: 20,
-            backgroundColor: 'white',
+            backgroundColor: "white",
             borderRadius: 10,
             maxHeight: 250,
           }}
@@ -750,7 +547,7 @@ export default function RouteView() {
                 onPress={(e) => {
                   onPredictionTapped(
                     prediction.place_id,
-                    prediction.description,
+                    prediction.description
                   );
                   let _fromTextSelected = false;
                   let _toTextSelected = false;
@@ -773,14 +570,14 @@ export default function RouteView() {
                 <View
                   style={{
                     padding: 15,
-                    borderBottomColor: '#e0e0e0',
+                    borderBottomColor: "#e0e0e0",
                     borderBottomWidth: 1,
                   }}
                 >
                   <Text
                     numberOfLines={1}
                     style={{
-                      color: '#404040',
+                      color: "#404040",
                       flex: 1,
                     }}
                   >
@@ -792,8 +589,8 @@ export default function RouteView() {
           })}
         </ScrollView>
       </View>
-      {uiState !== 'safety' ? (
-        ''
+      {uiState !== "safety" ? (
+        ""
       ) : (
         <View>
           <View style={styles.routes}>
@@ -855,7 +652,7 @@ export default function RouteView() {
                 style={{
                   fontFamily: "body",
                   color: "white",
-                  fontSize: 16,
+                  fontSize: 18,
                 }}
               >
                 {data.data.paths[selectedOption].instructions[instruction].text}
@@ -913,9 +710,11 @@ export default function RouteView() {
                 mi - Arriving
               </Text>
             </View>
-            <TouchableOpacity onPress={() => {
-              setUiState('safety')
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                setUiState("safety");
+              }}
+            >
               <View
                 style={{
                   backgroundColor: "#FF2538",
@@ -975,11 +774,11 @@ function getRestTime(
 
 const styles = StyleSheet.create({
   view: {
-    height: '100%',
+    height: "100%",
   },
   map: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   marker: {
     padding: 8,
@@ -989,18 +788,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.route,
     padding: 12,
     borderRadius: 12,
-    position: 'absolute',
+    position: "absolute",
   },
   currentFg: {
     width: 24,
     height: 24,
-    position: 'absolute',
+    position: "absolute",
   },
   routes: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
-    position: 'absolute',
-    width: '100%',
+    position: "absolute",
+    width: "100%",
     bottom: 0,
     borderTopEndRadius: 12,
     borderTopLeftRadius: 12,
@@ -1010,14 +809,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.buttonBg,
     padding: 16,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   confirmButtonText: {
-    color: 'white',
-    fontFamily: 'body',
+    color: "white",
+    fontFamily: "body",
   },
   searchfield: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

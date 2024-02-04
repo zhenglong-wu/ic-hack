@@ -1,5 +1,5 @@
 export const colors = {
-  route: "#20a0ff",
+  route: "#2245FF",
   routePassed: "#505860",
   routeBorder: "white",
   buttonBg: "black",
