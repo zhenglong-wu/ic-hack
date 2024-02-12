@@ -1,4 +1,4 @@
-from models.predict import predict
+from predict import predict
 import graph_hopper_manager
 import json
 

@@ -35,7 +35,7 @@ def scale_coordinate(longitude, latitude, long_range=(-180, 180), lat_range=(-90
 
 def predict(long: float, lat: float):
 
-    with open('/Users/zhenglongwu/Documents/GitHub/ic-hack/backend/models/model.pkl', 'rb') as file:
+    with open('/Users/zhenglongwu/Documents/GitHub/ic-hack/backend/model.pkl', 'rb') as file:
         model = pickle.load(file)
 
     scaled = scale_coordinate(longitude=long, latitude=lat)
