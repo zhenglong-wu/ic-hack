@@ -4,9 +4,11 @@ import os
 
 def get_route(dept: list[float, float], dest: list[float, float]):
 
+    print([f'{dept[1]}, {dept[0]}', f'{dest[1]}, {dest[0]}']) 
+
     query = {
         "profile": "foot",
-        "point": [','.join(map(str, dept)), ','.join(map(str, dest))],
+        "point": [f'{dept[1]}, {dept[0]}', f'{dest[1]}, {dest[0]}'],
         "point_hint": None,
         "snap_prevention": None,
         "curbside": None,
@@ -27,14 +29,14 @@ def get_route(dept: list[float, float], dest: list[float, float]):
         "round_trip.seed": "0",
         "alternative_route.max_paths": "3",
         # adjust in future
-        "alternative_route.max_weight_factor": "1.5",
+        "alternative_route.max_weight_factor": "2",
         # adjust in future
-        "alternative_route.max_share_factor": "0.5",
-        "key": os.environ.get('graph_hopper_api_key')
+        "alternative_route.max_share_factor": "0.25",
+        "key": 'd41e4d3d-a0e3-4306-9a6e-788d89d41ac2'
         }
     
     try:
-        response = requests.get(os.environ.get('ghm_url'), params=query)
+        response = requests.get('https://graphhopper.com/api/1/route', params=query)
 
         data = {'code': response.status_code, 'data': None}
 
@@ -42,6 +44,7 @@ def get_route(dept: list[float, float], dest: list[float, float]):
             data['data'] = response.json()
             return data
         else:
+            print('not getting right data')
             return data
         
     except Exception as error:

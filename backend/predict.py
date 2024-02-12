@@ -35,14 +35,14 @@ def scale_coordinate(longitude, latitude, long_range=(-180, 180), lat_range=(-90
 
 def predict(long: float, lat: float):
 
-    with open('/Users/zhenglongwu/Documents/GitHub/ic-hack/backend/model.pkl', 'rb') as file:
+    with open('model.pkl', 'rb') as file:
         model = pickle.load(file)
 
     scaled = scale_coordinate(longitude=long, latitude=lat)
 
     print(scaled[0], scaled[1])
 
-    return model.predict([[scaled[0], scaled[1]]]) + random.uniform(-0.13, 0.18)
+    return model.predict([[scaled[0], scaled[1]]]) + random.uniform(-0.23, 0.28)
 
 
     # scaler = MinMaxScaler()
@@ -61,4 +61,4 @@ def predict_batch(data):
     return
 
 
-print(predict(long=51.514086, lat=-10.129774))
+# print(predict(long=51.514086, lat=-10.129774))
